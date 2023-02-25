@@ -1,20 +1,33 @@
+<?php session_start();
+require_once('mariadb_conf.php');
+?>
 
-<?php session_start();?>
+
 <!DOCTYPE html>
 <html>
 <head>
 <title>Dashboard</title>
 </head>
 <body>
-<link href="styles/dashboard.css" rel="stylesheet"/>
-<h1> Dashboard </h1>
 <?php
-//print_r($_SESSION);
-echo "<p>". " Logged in as: ". $_SESSION['newsession_user'] ."</p>";
-//echo "<p>". "Password: ". $_SESSION['newsession_pass'] ."</p>";
+ require_once('mariadb_conf.php');
+ if($_SESSION['newsession_user'] == NULL){
+ 	die();
+ }
+ $query = mysqli_query($dbconnect, "Select * from User Where Username=". "'" .$_SESSION['newsession_user']. "'" . "and Password=" . "'" . $_SESSION['newsession_pass'] . "'" );
+ $row = mysqli_fetch_assoc($query);
+ if($row['User_id'] == NULL){
+ 	die();
+ }
+ $user_id = $row['User_id'];
+ echo $user_id;
+ echo '<link href="styles/dashboard.css" rel="stylesheet"/>';
+ echo "<h1> Dashboard </h1>";
+ echo "<p>". " Logged in as: ". $_SESSION['newsession_user'] ."</p>";
+
 date_default_timezone_set('Germany/Berlin');
 $current_time = date("H:i:s");
-$date = date("Y-m-d");
+$date = date("d-m-y");
 echo "<p>" . $current_time. "  ". $date . "</p>";
 
 ?>
@@ -35,7 +48,6 @@ echo "<p>" . $current_time. "  ". $date . "</p>";
 
 <?php
 require_once('mariadb_conf.php');
-
 $user_id = 2;
 
 function Create_Appointment($user,$Date,$Time,$EndTime,$Name,$Details,$dbconnect){
