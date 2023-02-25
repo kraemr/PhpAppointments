@@ -1,0 +1,39 @@
+@font-face {
+  font-family: "Common-Pixel";
+  src: url("COMMP___.woff") format('woff');
+}
+
+p{
+font-family: Common-Pixel;
+color: #dddddd;
+}
+
+h1{
+font-family: Common-Pixel;
+color: #dddddd;
+}
+
+
+body{
+        background-color: #000000;
+}
+
+th{
+font-family: Common-Pixel;
+color: #dddddd;
+}
+
+td{
+font-family: Common-Pixel;
+color:#dddddd;
+}
+
+table, th, td {
+  border: 1px solid white;
+}
+
+label{
+font-family: Common-Pixel;
+color:#dddddd;
+
+}
