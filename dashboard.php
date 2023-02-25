@@ -35,9 +35,11 @@ echo "<p>" . $current_time. "  ". $date . "</p>";
 
 <?php
 require_once('mariadb_conf.php');
+
 $user_id = 2;
 
 function Create_Appointment($user,$Date,$Time,$EndTime,$Name,$Details,$dbconnect){
+	require_once('phpsql_sanitize.php');
 	// makes a query and sends it
 	$query_str = "Insert Into Appointment(Date,Time,Details,Name,Who,EndTime) Values(" 
 	. "'" .$Date. "',".
@@ -47,7 +49,12 @@ function Create_Appointment($user,$Date,$Time,$EndTime,$Name,$Details,$dbconnect
 	$user. ",".
 	"'". $EndTime. "')";
 	// Validate Query Before
-	$query = mysqli_query($dbconnect,$query_str);
+	 if ( query_is_safe($query_str) == false){
+        	echo "<p> QUERY IS NOT SAFE </p>";
+        }
+        else{
+		$query = mysqli_query($dbconnect,$query_str);
+	}
 }
 
 if(array_key_exists('Appointment_btn',$_POST)){
@@ -62,11 +69,11 @@ if(array_key_exists('Delete_btn',$_POST)){
 	echo "<p> QUERY IS NOT SAFE </p>";
 	}
 	else{
-	}
 	$query = mysqli_query($dbconnect, $querystr);
+	}
 }
 
-$query = mysqli_query($dbconnect,"Select * from Appointment Join User On Appointment.Who = User.user_id Where User.user_id = 2 Order By Date asc;");
+$query = mysqli_query($dbconnect,"Select * from Appointment Join User On Appointment.Who = User.user_id Where User.user_id = 2 and Date>=Curdate() Order By Date asc;");
 while ($row = mysqli_fetch_array($query)){
 echo 
 "<tr>".
