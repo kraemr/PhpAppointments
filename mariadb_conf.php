@@ -2,7 +2,7 @@
 $hostname = "localhost";
 $username = 'user';
 $password = 'lla1061:;.231GTTg';
-$db = "Phpcrud";
+$db = "AppointmentDB";
 $dbconnect = mysqli_connect($hostname,$username,$password,$db);
 if ($dbconnect->connect_error) {
   die("Database connection failed: " . $dbconnect->connect_error);

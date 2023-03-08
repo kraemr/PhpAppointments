@@ -5,10 +5,12 @@ require_once('mariadb_conf.php');
 
 <!DOCTYPE html>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1.3">
 <head>
 <title>Dashboard</title>
 </head>
 <body>
+
 <?php
  require_once('mariadb_conf.php');
  if($_SESSION['newsession_user'] == NULL){
@@ -28,9 +30,7 @@ require_once('mariadb_conf.php');
 date_default_timezone_set('Germany/Berlin');
 $current_time = date("H:i:s");
 $date = date("d-m-y");
-echo "<p>" . $current_time. "  ". $date . "</p>";
-
-?>
+echo "<p>" . $current_time. "  ". $date . "</p>";?>
 
 
 <h1>Current appointments</h1>
@@ -48,8 +48,6 @@ echo "<p>" . $current_time. "  ". $date . "</p>";
 
 <?php
 require_once('mariadb_conf.php');
-$user_id = 2;
-
 function Create_Appointment($user,$Date,$Time,$EndTime,$Name,$Details,$dbconnect){
 	require_once('phpsql_sanitize.php');
 	// makes a query and sends it
@@ -85,18 +83,50 @@ if(array_key_exists('Delete_btn',$_POST)){
 	}
 }
 
-$query = mysqli_query($dbconnect,"Select * from Appointment Join User On Appointment.Who = User.user_id Where User.user_id = 2 and Date>=Curdate() Order By Date asc;");
+
+
+echo "<p> userid: ". $user_id . "</p>";
+
+
+$query = mysqli_query($dbconnect,"Select * from Appointment Join User On Appointment.Who = User.user_id Where User.user_id =". $user_id . " and Date>=Curdate() Order By Date asc;");
 while ($row = mysqli_fetch_array($query)){
-echo 
-"<tr>".
-"<th>". $row['Date'] ."</th>".
-"<th>". $row['Time'] ."</th>".
-"<th>". $row['EndTime'] ."</th>".
-"<th>". $row['Name'] ."</th>".
-"<th>". $row['Details'] ."</th>".
-"<th>". $row['Username'] ."</th>".
-"</tr>";
+	echo 
+	"<tr>".
+	"<th>". $row['Date'] ."</th>".
+	"<th>". $row['Time'] ."</th>".
+	"<th>". $row['EndTime'] ."</th>".
+	"<th>". $row['Name'] ."</th>".
+	"<th>". $row['Details'] ."</th>".
+	"<th>". $row['Username'] ."</th>".
+	"</tr>";
 }
+
+
+
+
+$Permquery = mysqli_query($dbconnect,"Select * from Permissions where owner_user_id=".$user_id); // Get Permissions
+//mysqli_fetch_all($res,MSQLI_ASSOC);
+while($r=mysqli_fetch_array($Permquery) ){
+	$res[]=$r;
+}
+
+foreach ($res as &$viewer_id) {
+$query = mysqli_query($dbconnect,"Select * from Appointment Join User On Appointment.Who = User.user_id Where User.user_id =". $viewer_id['viewer_user_id'] . " and Date>=Curdate() Order By Date asc;");
+	while ($row = mysqli_fetch_array($query)){
+		echo
+        	"<tr>".
+        	"<th>". $row['Date'] ."</th>".
+        	"<th>". $row['Time'] ."</th>".
+        	"<th>". $row['EndTime'] ."</th>".
+        	"<th>". $row['Name'] ."</th>".
+        	"<th>". $row['Details'] ."</th>".
+        	"<th>". $row['Username'] ."</th>".
+        	"</tr>";
+		}
+}
+//print_r($res);
+//echo "<p>" . $res[0]['viewer_user_id'] ."</p>";
+//mysqli_query($dbconnect,"Select * from Appointment,Permissions Join User On Appointment.Who = User.user_id Where User.user_id =". $viewer_user_id . " and Date>=Curdate() Order By Date asc;");
 echo "</table>";
 echo "</br>";
 ?>
@@ -120,5 +150,13 @@ echo "</br>";
 	<?php echo $_POST['Delete_ID']; ?>
 	<input type="submit" name="Delete_btn" value="Delete">
 </form>
+
+
+<form method="post" action="index.php">
+	<input type="submit" name="Logout" value"Logout">
+</form>
+
+
+
 </body>
 </html>
