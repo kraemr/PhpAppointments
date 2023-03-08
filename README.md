@@ -17,4 +17,6 @@ For testing you can use the PHP development server like so:
 ```
 php -S 0.0.0.0:8080
 ```
+And then in your browser go to localhost:8080 and register a user.
+
 
