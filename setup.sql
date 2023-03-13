@@ -6,3 +6,4 @@ Create Table Permissions(owner_user_id int , viewer_user_id int, Primary Key(own
 Create Unique Index Username_unique_idx on User(Username);
 Create Unique Index Appointment_Name_unique_idx on Appointment(Name);
 CREATE USER 'user'@localhost IDENTIFIED BY 'lla1061:;.231GTTg';
+GRANT ALL PRIVILEGES ON *.* TO 'user1'@localhost IDENTIFIED BY 'lla1061:;.231GTTg';
