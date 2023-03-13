@@ -18,10 +18,10 @@ require_once('mariadb_conf.php');
  }
  $query = mysqli_query($dbconnect, "Select * from User Where Username=". "'" .$_SESSION['newsession_user']. "'" . "and Password=" . "'" . $_SESSION['newsession_pass'] . "'" );
  $row = mysqli_fetch_assoc($query);
- if($row['user_id'] == NULL){
+ if($row['User_id'] == NULL){
  	die();
  }
- $user_id = $row['user_id'];
+ $user_id = $row['User_id'];
  echo $user_id;
  echo '<link href="styles/dashboard.css" rel="stylesheet"/>';
  echo "<h1> Dashboard </h1>";
