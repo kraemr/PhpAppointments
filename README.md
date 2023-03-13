@@ -3,7 +3,7 @@
 For Setup download PHP, Mariadb and a webserver for php.
 On Ubuntu/Debian:
 ```
-sudo apt install mariadb-server mariadb-client php8.1 php8.1-mysql
+sudo apt install mariadb-server mariadb-client php php-mysql
 ```
 
 
